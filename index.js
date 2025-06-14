@@ -45,9 +45,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   }
 });
 
+// Agendamento diário às 23h horário de Brasília
 cron.schedule('0 23 * * *', async () => {
   for (const guildId in dados) {
-    let relatorio = `📊 **Relatório de Voz – ${new Date().toLocaleDateString()}**\n\n`;
+    let relatorio = `📊 **Relatório de Voz – ${new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })}**\n\n`;
 
     for (const userId in dados[guildId]) {
       const logs = dados[guildId][userId];
@@ -71,7 +72,10 @@ cron.schedule('0 23 * * *', async () => {
     if (canal) canal.send(relatorio);
   }
 
+  // Limpa os dados após envio
   for (const g in dados) delete dados[g];
+}, {
+  timezone: 'America/Sao_Paulo'
 });
 
 client.on('messageCreate', async (message) => {
@@ -79,7 +83,7 @@ client.on('messageCreate', async (message) => {
     const guildId = message.guild.id;
     if (!dados[guildId]) return message.channel.send('Nenhum dado registrado.');
 
-    let relatorio = `📊 **Relatório Manual – ${new Date().toLocaleDateString()}**\n\n`;
+    let relatorio = `📊 **Relatório Manual – ${new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })}**\n\n`;
 
     for (const userId in dados[guildId]) {
       const logs = dados[guildId][userId];
