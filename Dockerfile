@@ -11,4 +11,4 @@ COPY . .
 RUN npm install
 
 # Executar o comando npm run (por exemplo, "npm run start")
-CMD ["npm", "run"]
+CMD ["node", "index.js"]
